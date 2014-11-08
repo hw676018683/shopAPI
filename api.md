@@ -263,7 +263,7 @@ Status: 403  forbidden
 ]
 ```
 
-### Catogory
+### Category
 #### 1.所属列别的商品
 每次发送10个商品
 
@@ -641,6 +641,7 @@ code：
 2-关注商品下架
 3-关注商品降价
 4-店家回复用户评论消息
+status: false-未读, true-已读
 
 ```json
 [
@@ -650,13 +651,15 @@ code：
     "product_id": 1,
     "product_name": "xxx",
     "reply_id": 2,
-    "content": "woqu"
+    "content": "woqu",
+    "status": false
   },
   {
     "id": 7,
     "code": 2,
     "product_id": 1,
-    "product_name": "xxx"
+    "product_name": "xxx",
+    "status": false
   },
   {
     "id": 6,
@@ -664,7 +667,8 @@ code：
     "store_id": 1,
     "store_name": "专属",
     "product_id": 23,
-    "product_name": "aa"
+    "product_name": "aa",
+    "status": true
   }
 ]
 ```
@@ -683,6 +687,21 @@ code：
 **Response**
 ```json
 {"number":1}
+```
+
+#### 3.删除消息
+
+    Delete /messages/:id
+
+ **Parameters**
+
+| Name      |     Type |   Description   |
+| :-------- | --------:| :------: |
+| remember_token    |   string | 登录之后获得的token |
+ 
+ **Response**
+```json
+{"code":"success"}
 ```
 
 ### 后端API
@@ -875,7 +894,8 @@ code：
 | skucate    |   string |  商品规格json格式的字符串，例子如下  |
 
 **e.g.**
-property-[{"name":"车重","value":"3t"},{"name":"类型","value":"越野"},{"name":"车高","value":"0.5m"}]
+property-[{"name":"车重","value":"3t"},{"name":"类型","value":"越野"},{"name":"车高","value":"0.5m"}]  
+
 skucate-[{"name1":"大小","value1":"1","name2":"颜色","value2":"红","price":3000,"quantity":30},{"name1":"大小","value1":"2","name2":"颜色","value2":"蓝","price":4000,"quantity":48}]
 
 **Response**
@@ -886,8 +906,9 @@ skucate-[{"name1":"大小","value1":"1","name2":"颜色","value2":"红","price":
 }
 ```
 2.上传轮播图片
+product_id是第一次上传返回得到的id
 
-    Post /admin/imglists
+    Post /admin/products/:product_id/imglists
     
 **Input**
 
@@ -895,7 +916,6 @@ skucate-[{"name1":"大小","value1":"1","name2":"颜色","value2":"红","price":
 | :-------- | --------:| :------: |
 | remember_token    |   string |  登录之后获得的认证  |
 | img    |   string |  轮播图片  |
-| product_id    |   number |  第一次上传返回得到的id  |
 
 **Response**
 ```json
@@ -904,15 +924,15 @@ skucate-[{"name1":"大小","value1":"1","name2":"颜色","value2":"红","price":
 }
 ```
 3.上传详细介绍
+product_id是第一次上传返回得到的id
 
-    Post /admin/details
+    Post /admin/products/:product_id/details
 
 **Input**
 
 | Name      |     Type |   Description   |
 | :-------- | --------:| :------: |
 | remember_token    |   string |  登录之后获得的认证  |
-| product_id    |   number |  第一次上传返回得到的id  |
 | img    |   string |  图片  |
 | text    |   string |  图片配套的文字  |
 
